@@ -1,6 +1,10 @@
 const express = require("express")
-const {provideTask} = require("../controllers/task")
 const router = express.Router()
 
-// router.get("/", provideTask)
+router.get("/", async(req, res) => {
+    if(!req.user) return res.redirect('/login')
+    return res.redirect("/")
+})
+
+
 module.exports = router 

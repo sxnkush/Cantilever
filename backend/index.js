@@ -4,6 +4,7 @@ const cors = require("cors")
 const PORT = 8001
 
 const taskRoute = require("./routes/task")
+const userRoute = require("./routes/user")
 const staticRoute = require("./routes/staticRoute")
 const {connectMongoose} = require("./connection")
 const taskModel = require("./models/task")
@@ -17,7 +18,9 @@ app.use(cors({
   }));
 app.use(express.json())
 app.use("/task", taskRoute)
+app.use("/user", userRoute)
 app.use("/", staticRoute)
+
 
 app.listen(PORT, ()=>console.log("Server Started"))
 
