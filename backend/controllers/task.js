@@ -26,7 +26,6 @@ async function provideTask(req, res) {
 
 async function deleteTask(req, res) {
   const id = req.params.id;
-  // const userId = req.params.id;
   try {
     const deleteData = await taskModel.findByIdAndDelete(id);
     if (!deleteData) return res.status(400).json({ msg: "No such task" });
