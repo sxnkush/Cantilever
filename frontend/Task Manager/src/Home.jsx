@@ -13,7 +13,7 @@ function Home() {
   const navigate = useNavigate();
   const updatedTodo = async (id, todo) => {
     try {
-      const res = await axios.patch(`http://localhost:8001/task/${id}`, todo);
+      const res = await axios.patch(`/api/task/${id}`, todo);
       setTodos(res.data);
     } catch (err) {
       console.log("ERROR in updating", err);
@@ -22,7 +22,7 @@ function Home() {
 
   const deleteTodo = async (id) => {
     try {
-      const res = await axios.delete(`http://localhost:8001/task/${id}`);
+      const res = await axios.delete(`/api/task/${id}`);
       setTodos((prev) =>
         prev.filter((item) => item._id !== res.data.deleted._id)
       );
@@ -34,7 +34,7 @@ function Home() {
   const toggleCheck = async (todo) => {
     try {
       const res = await axios.patch(
-        `http://localhost:8001/task/toggle/${todo._id}`,
+        `/api/task/toggle/${todo._id}`,
         todo
       );
       setTodos(res.data);
@@ -47,7 +47,7 @@ function Home() {
     const fetchTodos = async () => {
       try {
         console.log("Fetching....");
-        const res = await axios.get(`http://localhost:8001/task`);
+        const res = await axios.get(`/api/task`);
         console.log(res.data)
         if(res.data.message === "not found")
         {
@@ -86,7 +86,7 @@ function Home() {
       <button
         type="submit"
         onClick={async () => {
-          await axios.post("http://localhost:8001/user/logout");
+          await axios.post("/api/user/logout");
           navigate("/login")
         }}
       >

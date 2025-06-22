@@ -16,7 +16,7 @@ function TodoForm() {
     };
 
     try {
-      const response = await axios.post(`http://localhost:8001/task`, formData, {
+      const response = await axios.post(`/api/task`, formData, {
         headers: {
           "Content-Type": "application/json",
         },

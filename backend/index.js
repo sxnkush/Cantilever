@@ -25,8 +25,8 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/task", restrictToLoggedInUserOnly, taskRoute);
-app.use("/user", checkAuth, userRoute);
+app.use("/api/task", restrictToLoggedInUserOnly, taskRoute);
+app.use("/api/user", checkAuth, userRoute);
 
 
 app.listen(PORT, () => console.log("Server Started"));
