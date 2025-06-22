@@ -1,28 +1,34 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useTodo } from "../contexts";
 
 function TodoForm() {
   const [todo, setTodo] = useState("");
-  const {setTodos} = useTodo()
+  const { setTodos } = useTodo();
   const add = async (e) => {
     e.preventDefault();
     if (!todo) return;
+
     const formData = {
+      userId: userId,
       taskInfo: todo,
       toggleCheck: false,
     };
 
-    const response = await fetch("http://localhost:8001/task", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // to specify JSON format
-      },
-      body: JSON.stringify(formData),       // to convert form data into JSON string
-    });
-    const result = await response.json();
-    setTodos(result)
-    setTodo("");
+    try {
+      const response = await axios.post(`http://localhost:8001/task`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      setTodos(response.data);
+      setTodo("");
+    } catch (err) {
+      console.error("Error adding task:", err.response?.data || err.message);
+    }
   };
+
   return (
     <form onSubmit={add} className="flex">
       <input

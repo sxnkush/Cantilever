@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import "./App.css";
 import { TodoProvider } from "./contexts";
 import TodoForm from "./components/TodoForm";
 import TodoItem from "./components/TodoItem";
+import { useNavigate } from "react-router-dom";
+
+axios.defaults.withCredentials = true;
 
 function Home() {
   const [todos, setTodos] = useState([]);
-
+  const navigate = useNavigate();
   const updatedTodo = async (id, todo) => {
     try {
-      const res = await fetch(`http://localhost:8001/task/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json", // to specify JSON format
-        },
-        body: JSON.stringify(todo),
-      });
-      const todos = await res.json();
-      setTodos(todos);
+      const res = await axios.patch(`http://localhost:8001/task/${id}`, todo);
+      setTodos(res.data);
     } catch (err) {
       console.log("ERROR in updating", err);
     }
@@ -25,27 +22,22 @@ function Home() {
 
   const deleteTodo = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8001/task/${id}`, {
-        method: "DELETE",
-      });
-      const todos = await res.json();
-      setTodos((prev) => prev.filter((item) => item._id !== todos.deleted._id));
+      const res = await axios.delete(`http://localhost:8001/task/${id}`);
+      setTodos((prev) =>
+        prev.filter((item) => item._id !== res.data.deleted._id)
+      );
     } catch (err) {
       console.log("ERROR in deleting", err);
     }
   };
 
-  const toggleCheck = async(todo) => {
+  const toggleCheck = async (todo) => {
     try {
-      const res = await fetch(`http://localhost:8001/task/toggle/${todo._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json", // to specify JSON format
-        },
-        body: JSON.stringify(todo),
-      });
-      const todos = await res.json();
-      setTodos(todos);
+      const res = await axios.patch(
+        `http://localhost:8001/task/toggle/${todo._id}`,
+        todo
+      );
+      setTodos(res.data);
     } catch (err) {
       console.log("ERROR in toggling", err);
     }
@@ -54,15 +46,16 @@ function Home() {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await fetch("http://localhost:8001/task", {
-          method: "GET",
-        });
-        const todos = await res.json();
-        if (todos && todos.length >= 0) {
-          setTodos(todos);
+        console.log("Fetching....");
+        const res = await axios.get(`http://localhost:8001/task`);
+        console.log(res.data)
+        if(res.data.message === "not found")
+        {
+          navigate("/login")
         }
+        setTodos(res.data);
       } catch (err) {
-        console.log("ERROR", err);
+        console.log("ERROR in fetching", err);
       }
     };
 
@@ -82,7 +75,6 @@ function Home() {
             <TodoForm />
           </div>
           <div className="flex flex-wrap gap-y-3">
-            {/*Loop and Add TodoItem here */}
             {todos.map((todo) => (
               <div key={todo._id}>
                 <TodoItem todo={todo} />
@@ -91,6 +83,15 @@ function Home() {
           </div>
         </div>
       </div>
+      <button
+        type="submit"
+        onClick={async () => {
+          await axios.post("http://localhost:8001/user/logout");
+          navigate("/login")
+        }}
+      >
+        Log Out
+      </button>
     </TodoProvider>
   );
 }

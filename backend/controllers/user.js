@@ -1,27 +1,38 @@
-const User = require("../models/user")
-const {setUser} = require("../services/auth")
+const User = require("../models/user");
+const { setUser } = require("../services/auth");
 
-async function handleSignUp(req,res)
-{
-    const userData = req.body
-    await User.create({
-        name: userData.name,
-        email: userData.email,
-        password: userData.password
-    })
+async function handleSignUp(req, res) {
+  console.log("Controller signup")
+  const userData = req.body;
+  console.log("Data",req.body)
+  await User.create({
+    name: userData.name,
+    email: userData.email,
+    password: userData.password,
+  });
 
-    return res.redirect("/login")
+  return res.status(201).json({ message: "success" });
 }
 
-async function handleLogIn(req,res)
-{
-    const {email, password} = req.body
-    const user = await User.findOne({email, password})
-    if(!user) return res.redirect("/login")
+async function handleLogIn(req, res) {
+  console.log("Controller LOGIN")
+  const { email, password } = req.body;
+  const user = await User.findOne({ email, password });
+  if (!user) return res.json({message:"not found"});
 
-    const token = setUser(user) 
-    res.cookie('uid', token)
-    return res.redirect("/")   
+  const token = setUser(user);
+  res.cookie("uid", token, {
+    httpOnly: true,
+    sameSite: "Lax",
+  });
+
+  return res.json({message:"success"})
 }
 
-module.exports = {handleSignUp, handleLogIn}
+
+async function handleLogOut(req, res) {
+  console.log("Logging out...")
+  res.cookie("uid", "")
+  return res.json({message:"Logged Out"})
+}
+module.exports = { handleSignUp, handleLogIn, handleLogOut };

@@ -3,8 +3,9 @@ const taskModel = require("../models/task");
 async function handleTask(req, res) {
   const taskData = req.body;
   if (!taskData.taskInfo) return res.status(400).json({ msg: "NO task found" });
-
+  console.log("Handle");
   await taskModel.create({
+    userId: req.user._id, //will get 'user' from the middleware restrictedtologgedinusers there we defined req.user = user using the route '/task'
     taskInfo: taskData.taskInfo,
     toggleCheck: taskData.toggleCheck,
     visitHistory: [],
@@ -15,12 +16,17 @@ async function handleTask(req, res) {
 }
 
 async function provideTask(req, res) {
-  const taskData = await taskModel.find();
+  console.log("Providing task");
+  const userId = req.user._id;
+  console.log(userId);
+  const taskData = await taskModel.find({ userId: userId });
+  console.log(taskData);
   return res.json(taskData);
 }
 
 async function deleteTask(req, res) {
   const id = req.params.id;
+  // const userId = req.params.id;
   try {
     const deleteData = await taskModel.findByIdAndDelete(id);
     if (!deleteData) return res.status(400).json({ msg: "No such task" });
@@ -31,6 +37,7 @@ async function deleteTask(req, res) {
 }
 
 async function updateTask(req, res) {
+  console.log("Update");
   const id = req.params.id;
   const taskData = req.body;
   try {
@@ -46,12 +53,11 @@ async function updateTask(req, res) {
   }
 }
 
-async function updateToggleCheck(req,res)
-{
-    const id = req.params.id
-    const taskData = req.body;
+async function updateToggleCheck(req, res) {
+  const id = req.params.id;
+  const taskData = req.body;
 
-    try {
+  try {
     const updateToggle = await taskModel.findByIdAndUpdate(
       id,
       { toggleCheck: !taskData.toggleCheck },
@@ -64,4 +70,10 @@ async function updateToggleCheck(req,res)
   }
 }
 
-module.exports = { handleTask, provideTask, deleteTask, updateTask, updateToggleCheck };
+module.exports = {
+  handleTask,
+  provideTask,
+  deleteTask,
+  updateTask,
+  updateToggleCheck,
+};

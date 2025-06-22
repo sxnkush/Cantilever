@@ -8,4 +8,4 @@ router.delete("/:id", deleteTask)
 router.patch("/:id", updateTask)
 router.patch("/toggle/:id", updateToggleCheck)
 
-module.exports = router 
+module.exports = router;
