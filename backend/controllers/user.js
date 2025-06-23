@@ -35,4 +35,12 @@ async function handleLogOut(req, res) {
   res.cookie("uid", "")
   return res.json({message:"Logged Out"})
 }
-module.exports = { handleSignUp, handleLogIn, handleLogOut };
+
+async function provideUser(req, res) {
+  userId = req.user._id
+  const userData = await User.find({_id: userId})
+  return res.json(userData)
+}
+
+
+module.exports = { handleSignUp, handleLogIn, handleLogOut, provideUser };

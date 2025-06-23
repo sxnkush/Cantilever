@@ -9,18 +9,20 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [warning, setWarning] = useState(false)
+  const [warning, setWarning] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    if (!name || !email || !pass)
-    {
-      setWarning(true)
+    if (!name || !email || !pass) {
+      setWarning(true);
+      setLoading(false)
       return;
     }
+
+    setLoading(true);
     try {
-      console.log("In sign up form");
       const response = await axios.post(
         "/api/user/signup",
         {
@@ -36,13 +38,14 @@ export default function Signup() {
       );
 
       console.log("Signup success:", response.data);
-      navigate("/login");
-
       setName("");
       setEmail("");
       setPass("");
+      navigate("/login");
     } catch (error) {
       console.error("Signup error:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,14 +95,51 @@ export default function Signup() {
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
-            <span className={`text-red-600 ${warning ? "flex":"hidden"}`}>Fill each field</span>
+
+            <span className={`text-red-600 ${warning ? "flex" : "hidden"}`}>
+              Fill each field
+            </span>
+
             <button
               type="submit"
-              className="w-full bg-purple-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-purple-700 transition"
+              disabled={loading}
+              className={`w-full text-white flex items-center justify-center gap-2 font-semibold py-2 px-4 rounded-md transition ${
+                loading
+                  ? "bg-purple-700 cursor-not-allowed"
+                  : "bg-purple-600 hover:bg-purple-700 cursor-pointer"
+              }`}
             >
-              Sign Up
+              {loading && (
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+              )}
+              {loading ? "Signing Up..." : "Sign Up"}
             </button>
           </form>
+          <span>
+            Already a user please do{" "}
+            <a href="/login" className="text-blue-400 underline">
+              Log In
+            </a>
+          </span>
         </div>
       </div>
 

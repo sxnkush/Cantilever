@@ -10,7 +10,6 @@ function TodoForm() {
     if (!todo) return;
 
     const formData = {
-      userId: userId,
       taskInfo: todo,
       toggleCheck: false,
     };
@@ -33,14 +32,14 @@ function TodoForm() {
     <form onSubmit={add} className="flex">
       <input
         type="text"
-        placeholder="Write Todo..."
+        placeholder="Write Task..."
         className="w-full border border-black/10 rounded-l-lg px-3 outline-none duration-150 bg-white/20 py-1.5"
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
       />
       <button
         type="submit"
-        className="rounded-r-lg px-3 py-1 bg-green-600 text-white shrink-0"
+        className="rounded-r-lg px-3 py-1 bg-amber-500 text-white shrink-0 hover:cursor-pointer hover:bg-amber-700 transition"
       >
         Add
       </button>

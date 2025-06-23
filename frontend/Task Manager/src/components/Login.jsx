@@ -10,31 +10,39 @@ export default function Login() {
   const [pass, setPass] = useState("");
   const navigate = useNavigate();
   const [warning, setWarning] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !pass) return;
+    if (!email || !pass) {
+      setWarning(true);
+      return;
+    }
+    setLoading(true);
 
     try {
-      const response = await axios.post(
-        "/api/user/login",
-        { email, password: pass },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      setTimeout(async () => {
+        const response = await axios.post(
+          "/api/user/login",
+          { email, password: pass },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      if (response.data.message === "not found") {
-        setWarning(true);
+        if (response.data.message === "not found") {
+          setWarning(true);
+          setLoading(false);
+          setPass("");
+          return;
+        }
+        if (response.data.message === "success") {
+          navigate(`/`);
+        }
+        setEmail("");
         setPass("");
-        return;
-      }
-      if (response.data.message === "success") {
-        navigate(`/`);
-      }
-      setEmail("");
-      setPass("");
+      }, 2000);
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
     }
@@ -74,20 +82,50 @@ export default function Login() {
               />
             </div>
             <span
-              className={`text-red-600 -mt-2 ${
-                warning ? "flex" : "hidden"
-              }`}
+              className={`text-red-600 -mt-2 ${warning ? "flex" : "hidden"}`}
             >
               Invalid Credentials
             </span>
             <button
               type="submit"
-              className="w-full bg-yellow-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-yellow-600 transition hover:cursor-pointer"
+              disabled={loading}
+              className={`w-full flex items-center justify-center gap-2 font-semibold py-2 px-4 rounded-md transition ${
+                loading
+                  ? "bg-yellow-600 cursor-not-allowed"
+                  : "bg-yellow-500 hover:bg-yellow-600 cursor-pointer"
+              }`}
             >
-              Login
+              {loading && (
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+              )}
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
-          <span>If new user please do <a href="/signup" className="text-blue-400 underline">Sign Up</a></span>
+          <span>
+            If new user please do{" "}
+            <a href="/signup" className="text-blue-400 underline">
+              Sign Up
+            </a>
+          </span>
         </div>
       </div>
 
