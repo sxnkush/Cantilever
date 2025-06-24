@@ -18,7 +18,7 @@ function Home() {
   const [time, setTime] = useState(new Date());
   const [showLogout, setShowLogout] = useState(false);
   const [arrowDown, setArrowDown] = useState(false);
-
+  const [completed, setCompleted] = useState(false);
   useEffect(() => {
     const tick = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(tick);
@@ -90,8 +90,8 @@ function Home() {
     <TodoProvider
       value={{ todos, setTodos, updatedTodo, deleteTodo, toggleCheck }}
     >
-      <div className="flex min-h-screen bg-[#001d31] text-white">
-        <aside className="w-72 bg-[#011c2b] px-6 py-8 flex flex-col justify-between shadow-xl">
+      <div className="relative flex min-h-screen bg-[#001d31] text-white">
+        <aside className="fixed left-0 w-72 bg-[#011c2b] px-6 py-8 flex flex-col justify-between shadow-xl">
           <div>
             <h2 className="text-2xl font-semibold mb-8 text-center tracking-wide">
               Dashboard
@@ -142,7 +142,7 @@ function Home() {
               <div className="flex p-3 rounded-lg justify-center">
                 {[...hours, ":", ...minutes, ":", ...seconds].map((char, idx) =>
                   char === ":" ? (
-                    <div key={idx} className="text-4xl font-mono text-white ">
+                    <div key={idx} className="text-4xl font-mono text-white mt-2.5">
                       :
                     </div>
                   ) : (
@@ -191,7 +191,7 @@ function Home() {
           </div>
         </aside>
 
-        <main className="flex-1 py-12 px-6">
+        <main className="flex-1 py-12 px-6 ml-32">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-5xl font-bold text-center mb-10">
               Manage Your Tasks
@@ -199,10 +199,25 @@ function Home() {
             <div className="mb-8">
               <TodoForm />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {todos.map((todo) => (
-                <TodoItem key={todo._id} todo={todo} />
-              ))}
+            <div className="columns-1 sm:columns-2 gap-4 space-y-4">
+              {todos.map((todo) => {
+                if (!todo.toggleCheck) {
+                  return <TodoItem key={todo._id} todo={todo} />;
+                }
+              })}
+            </div>
+            {completed ? (
+              <p className="text-2xl font-semibold mt-16 mb-10">Completed Tasks</p>
+            ) : (
+              ""
+            )}
+            <div className="columns-1 sm:columns-2 gap-4 space-y-4">
+              {todos.map((todo) => {
+                if (todo.toggleCheck) {
+                  if (!completed) setCompleted(true);
+                  return <TodoItem key={todo._id} todo={todo} />;
+                }
+              })}
             </div>
           </div>
         </main>
