@@ -8,6 +8,7 @@ async function handleTask(req, res) {
     userId: req.user._id, //will get 'user' from the middleware restrictedtologgedinusers there we defined req.user = user using the route '/task'
     taskInfo: taskData.taskInfo,
     toggleCheck: taskData.toggleCheck,
+    startMarked: taskData.startMarked,
     visitHistory: [],
   });
 
@@ -48,7 +49,7 @@ async function updateTask(req, res) {
     const updatedTaskData = await taskModel.find();
     return res.json(updatedTaskData);
   } catch (error) {
-    return res.status(400).json({ msg: "Error in updating" });
+    return res.status(400).json({ msg: "Error in updating task" });
   }
 }
 
@@ -65,7 +66,22 @@ async function updateToggleCheck(req, res) {
     const updatedTaskData = await taskModel.find();
     return res.json(updatedTaskData);
   } catch (error) {
-    return res.status(400).json({ msg: "Error in updating" });
+    return res.status(400).json({ msg: "Error in updating toggle" });
+  }
+}
+
+async function updateStarMark(req, res) {
+  const id = req.params.id;
+  const taskData = req.body;
+
+  try {
+    const updateStarMark = await taskModel.findByIdAndUpdate(id, {
+      starMarked: !taskData.starMarked,
+    });
+    const updatedStarData = await taskModel.find();
+    return res.json(updatedStarData);
+  } catch (err) {
+    return res.status(400).json({ msg: "Error in updating star" });
   }
 }
 
@@ -75,4 +91,5 @@ module.exports = {
   deleteTask,
   updateTask,
   updateToggleCheck,
+  updateStarMark,
 };

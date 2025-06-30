@@ -4,7 +4,7 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #ac8cc9; /* Tailwind purple-500 */
+  background-color: #8cb6c9; 
   border-radius: 9999px;
 }
 

@@ -11,7 +11,8 @@ import {createContext, useContext} from "react"
     addTodo: (todo) => {},
     updatedTodo:(id, todo) => {},
     deleteTodo:(id) => {},
-    toggleCheck: (id) => {}
+    toggleCheck: (todo) => {},
+    starMark: (todo) => {}
 })
 
  export const useTodo = () => {
