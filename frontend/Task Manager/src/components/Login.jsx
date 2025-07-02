@@ -11,6 +11,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [warning, setWarning] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!email || !pass) {
@@ -49,10 +50,26 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-yellow-300 to-yellow-500">
-      <div className="w-1/2 flex items-center justify-center p-8">
-        <div className="bg-white shadow-xl rounded-lg p-10 w-full max-w-md">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+    <div className="relative min-h-screen bg-gradient-to-br from-yellow-500 to-yellow-800">
+      <img
+        src="/Login.svg"
+        alt="Login Background"
+        className="absolute sm:top-0 -top-10 -left-5 inset-0 w-full h-full object-cover opacity-30 z-0"
+      />
+
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
+        <div className="text-center mb-8 mt-8">
+          <h1 className="text-3xl sm:text-5xl font-bold">
+            <span className="text-yellow-900">Task</span>{" "}
+            <span className="text-white">Manager</span>
+          </h1>
+          <p className="text-amber-100 font-semibold text-sm sm:text-lg mt-1">
+            Let’s manage your tasks effortlessly.
+          </p>
+        </div>
+
+        <div className="bg-white opacity-90 backdrop-blur-md shadow-xl rounded-lg p-8 sm:p-10 w-full max-w-md mt-4">
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
             Login
           </h2>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -81,11 +98,13 @@ export default function Login() {
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
+
             <span
               className={`text-red-600 -mt-2 ${warning ? "flex" : "hidden"}`}
             >
               Invalid Credentials
             </span>
+
             <button
               type="submit"
               disabled={loading}
@@ -120,21 +139,13 @@ export default function Login() {
               {loading ? "Logging in..." : "Login"}
             </button>
           </form>
-          <span>
+          <span className="block text-center mt-4">
             If new user please do{" "}
             <a href="/signup" className="text-blue-400 underline">
               Sign Up
             </a>
           </span>
         </div>
-      </div>
-
-      <div className="w-1/2 h-fit">
-        <img
-          src="/Login.svg"
-          alt="Login Visual"
-          className="w-full sm:h-screen object-cover rounded-[50px] p-6"
-        />
       </div>
     </div>
   );

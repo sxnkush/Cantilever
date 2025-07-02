@@ -61,7 +61,7 @@ function TodoItem({ todo }) {
           </p>
         </div>
       )}
-      <div className="flex space-x-2 items-baseline-last">
+      <div className="flex sm:flex-row flex-col space-y-2 sm:space-y-0 sm:space-x-2 sm:items-baseline-last justify-center">
         <button
           className={`inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50  shrink-0 disabled:opacity-50  ${todo.toggleCheck? "hover:cursor-not-allowed" : "hover:cursor-pointer hover:bg-gray-200"}`}
           onClick={() => {
