@@ -313,7 +313,7 @@ function Home() {
               <div className="relative mb-8">
                 <TodoForm />
                 <button
-                  className="absolute top-12 bg-[#02293e] hover:bg-[#00c2ff] hover:text-black p-2 rounded-md"
+                  className="absolute top-16 bg-[#02293e] hover:bg-[#00c2ff] hover:text-black p-2 rounded-md"
                   onClick={() => setShowFilters((prev) => !prev)}
                 >
                   <FaFilter className="text-xl" />

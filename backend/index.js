@@ -15,7 +15,7 @@ connectMongoose("mongodb://127.0.0.1:27017/task").then(() =>
 );
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  // origin: "http://localhost:5173",
   credentials: true
 };
 
