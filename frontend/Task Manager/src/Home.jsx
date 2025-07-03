@@ -41,7 +41,9 @@ function Home() {
 
   const updatedTodo = async (id, todo) => {
     try {
-      const res = await axios.patch(`${BASE_URL}/api/task/${id}`, todo, { withCredentials: true });
+      const res = await axios.patch(`${BASE_URL}/api/task/${id}`, todo, {
+        withCredentials: true,
+      });
       setTodos(res.data);
     } catch (err) {
       console.log("ERROR in updating", err);
@@ -50,7 +52,9 @@ function Home() {
 
   const deleteTodo = async (id) => {
     try {
-      const res = await axios.delete(`${BASE_URL}/api/task/${id}`, { withCredentials: true });
+      const res = await axios.delete(`${BASE_URL}/api/task/${id}`, {
+        withCredentials: true,
+      });
       setTodos((prev) =>
         prev.filter((item) => item._id !== res.data.deleted._id)
       );
@@ -61,7 +65,11 @@ function Home() {
 
   const toggleCheck = async (todo) => {
     try {
-      const res = await axios.patch(`${BASE_URL}/api/task/toggle/${todo._id}`, todo, { withCredentials: true });
+      const res = await axios.patch(
+        `${BASE_URL}/api/task/toggle/${todo._id}`,
+        todo,
+        { withCredentials: true }
+      );
       setTodos(res.data);
     } catch (err) {
       console.log("ERROR in toggling", err);
@@ -70,7 +78,11 @@ function Home() {
 
   const starMark = async (todo) => {
     try {
-      const res = await axios.patch(`${BASE_URL}/api/task/star/${todo._id}`, todo, { withCredentials: true });
+      const res = await axios.patch(
+        `${BASE_URL}/api/task/star/${todo._id}`,
+        todo,
+        { withCredentials: true }
+      );
       setTodos(res.data);
     } catch (err) {
       console.log("ERROR in Star Mark", err);
@@ -80,7 +92,9 @@ function Home() {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/task`, { withCredentials: true });
+        const res = await axios.get(`${BASE_URL}/api/task`, {
+          withCredentials: true,
+        });
         if (res.data.message === "not found") {
           navigate("/login");
         } else {
@@ -93,8 +107,11 @@ function Home() {
 
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/user`, { withCredentials: true });
-        setUser(res.data);
+        const res = await axios.get(`${BASE_URL}/api/user`, {
+          withCredentials: true,
+        });
+        if (res.data && res.data._id) setUser(res.data);
+        else navigate("/login");
       } catch (err) {
         console.log("ERROR in fetching User", err);
       }
@@ -182,7 +199,9 @@ function Home() {
               <button
                 className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md cursor-pointer text-sm"
                 onClick={async () => {
-                  await axios.post(`${BASE_URL}/api/user/logout`, { withCredentials: true });
+                  await axios.post(`${BASE_URL}/api/user/logout`, {
+                    withCredentials: true,
+                  });
                   navigate("/login");
                 }}
               >
@@ -231,7 +250,9 @@ function Home() {
                   <button
                     className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md cursor-pointer"
                     onClick={async () => {
-                      await axios.post(`${BASE_URL}/api/user/logout`, { withCredentials: true });
+                      await axios.post(`${BASE_URL}/api/user/logout`, {
+                        withCredentials: true,
+                      });
                       navigate("/login");
                     }}
                   >
