@@ -43,6 +43,10 @@ async function handleLogOut(req, res) {
 
 async function provideUser(req, res) {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "Unauthorized: User not authenticated" });
+    }
+
     const userId = req.user._id;
     const userData = await User.findById(userId);
 
@@ -56,5 +60,6 @@ async function provideUser(req, res) {
     return res.status(500).json({ message: "Server error" });
   }
 }
+
 
 module.exports = { handleSignUp, handleLogIn, handleLogOut, provideUser };
