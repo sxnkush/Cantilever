@@ -110,8 +110,11 @@ function Home() {
         const res = await axios.get(`${BASE_URL}/api/user`, {
           withCredentials: true,
         });
-        if (res.data && res.data._id) {setUser(res.data); console.log(res.data)}
-        else {console.log("else case"); navigate("/login");}
+        if (res.data.message === "not found") {
+          navigate("/login");
+        } else {
+          setUser(res.data);
+        }
       } catch (err) {
         console.log("ERROR in fetching User", err);
       }
