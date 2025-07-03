@@ -1,16 +1,18 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = 8001;
+const PORT = process.env.PORT || 8001;
 const cookieParser = require("cookie-parser");
 const { restrictToLoggedInUserOnly, checkAuth } = require("./middleware/auth");
+const dotenv = require("dotenv")
+dotenv.config()
 
 const taskRoute = require("./routes/task");
 const userRoute = require("./routes/user");
 const { connectMongoose } = require("./connection");
 const taskModel = require("./models/task");
 
-connectMongoose("mongodb://127.0.0.1:27017/task").then(() =>
+connectMongoose(process.env.MONGO_URI).then(() =>
   console.log("Mongoose Connected")
 );
 
