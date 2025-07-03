@@ -28,7 +28,8 @@ export default function Signup() {
       const response = await axios.post(
         `${BASE_URL}/api/user/signup`,
         { name, email, password: pass },
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } },
+        { withCredentials: true }
       );
 
       console.log("Signup success:", response.data);

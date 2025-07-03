@@ -17,9 +17,6 @@ async function handleTask(req, res) {
 }
 
 async function provideTask(req, res) {
-   if (!req.user || !req.user._id) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
   const userId = req.user._id;
   const taskData = await taskModel.find({ userId: userId });
   return res.json(taskData);
