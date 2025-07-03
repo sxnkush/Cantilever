@@ -17,11 +17,11 @@ async function handleTask(req, res) {
 }
 
 async function provideTask(req, res) {
-  console.log("Providing task");
+   if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
   const userId = req.user._id;
-  console.log(userId);
   const taskData = await taskModel.find({ userId: userId });
-  console.log(taskData);
   return res.json(taskData);
 }
 
