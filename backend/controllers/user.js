@@ -42,10 +42,19 @@ async function handleLogOut(req, res) {
 }
 
 async function provideUser(req, res) {
-    userId = req.user._id;
-    const userData = await User.find({ _id: userId });
+  try {
+    const userId = req.user._id;
+    const userData = await User.findById(userId);
+
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     return res.json(userData);
-  
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
 }
 
 module.exports = { handleSignUp, handleLogIn, handleLogOut, provideUser };
