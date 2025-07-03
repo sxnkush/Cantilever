@@ -10,7 +10,6 @@ import {
   FaChevronRight,
   FaEnvelope,
   FaFilter,
-  FaUser,
 } from "react-icons/fa";
 import "react-clock/dist/Clock.css";
 import DigitClock from "./components/DigitClock";

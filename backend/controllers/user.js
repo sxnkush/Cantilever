@@ -42,9 +42,14 @@ async function handleLogOut(req, res) {
 }
 
 async function provideUser(req, res) {
-  userId = req.user._id;
-  const userData = await User.find({ _id: userId });
-  return res.json(userData);
+  if (req.user && req.user._id) {
+    userId = req.user._id;
+    const userData = await User.find({ _id: userId });
+    return res.json(userData);
+  }
+  else{
+    return res.json({message:"not found"})
+  }
 }
 
 module.exports = { handleSignUp, handleLogIn, handleLogOut, provideUser };
