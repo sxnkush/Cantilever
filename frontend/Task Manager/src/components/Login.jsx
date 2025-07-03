@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
+
 export default function Login() {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ export default function Login() {
     try {
       setTimeout(async () => {
         const response = await axios.post(
-          "/api/user/login",
+          `${BASE_URL}/api/user/login`,
           { email, password: pass },
           {
             headers: {

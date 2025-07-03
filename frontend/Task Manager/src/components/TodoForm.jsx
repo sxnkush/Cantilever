@@ -3,6 +3,8 @@ import axios from "axios";
 import { useTodo } from "../contexts";
 
 function TodoForm() {
+
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [todo, setTodo] = useState("");
   const { todos, setTodos } = useTodo();
   const [alert, setAlert] = useState(false);
@@ -24,7 +26,7 @@ function TodoForm() {
     };
 
     try {
-      const response = await axios.post(`/api/task`, formData, {
+      const response = await axios.post(`${BASE_URL}/api/task`, formData, {
         headers: {
           "Content-Type": "application/json",
         },

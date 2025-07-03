@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
+
 export default function Signup() {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -24,7 +26,7 @@ export default function Signup() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "/api/user/signup",
+        `${BASE_URL}/api/user/signup`,
         { name, email, password: pass },
         { headers: { "Content-Type": "application/json" } }
       );

@@ -18,6 +18,7 @@ import DigitClock from "./components/digitClock";
 axios.defaults.withCredentials = true;
 
 function Home() {
+  const BASE_URL = import.meta.env.VITE_API_URL;
   const [todos, setTodos] = useState([]);
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function Home() {
 
   const updatedTodo = async (id, todo) => {
     try {
-      const res = await axios.patch(`/api/task/${id}`, todo);
+      const res = await axios.patch(`${BASE_URL}/api/task/${id}`, todo);
       setTodos(res.data);
     } catch (err) {
       console.log("ERROR in updating", err);
@@ -49,7 +50,7 @@ function Home() {
 
   const deleteTodo = async (id) => {
     try {
-      const res = await axios.delete(`/api/task/${id}`);
+      const res = await axios.delete(`${BASE_URL}/api/task/${id}`);
       setTodos((prev) =>
         prev.filter((item) => item._id !== res.data.deleted._id)
       );
@@ -60,7 +61,7 @@ function Home() {
 
   const toggleCheck = async (todo) => {
     try {
-      const res = await axios.patch(`/api/task/toggle/${todo._id}`, todo);
+      const res = await axios.patch(`${BASE_URL}/api/task/toggle/${todo._id}`, todo);
       setTodos(res.data);
     } catch (err) {
       console.log("ERROR in toggling", err);
@@ -69,7 +70,7 @@ function Home() {
 
   const starMark = async (todo) => {
     try {
-      const res = await axios.patch(`/api/task/star/${todo._id}`, todo);
+      const res = await axios.patch(`${BASE_URL}/api/task/star/${todo._id}`, todo);
       setTodos(res.data);
     } catch (err) {
       console.log("ERROR in Star Mark", err);
@@ -79,7 +80,7 @@ function Home() {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await axios.get(`/api/task`);
+        const res = await axios.get(`${BASE_URL}/api/task`);
         if (res.data.message === "not found") {
           navigate("/login");
         } else {
@@ -92,7 +93,7 @@ function Home() {
 
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`/api/user`);
+        const res = await axios.get(`${BASE_URL}/api/user`);
         setUser(res.data);
       } catch (err) {
         console.log("ERROR in fetching User", err);
@@ -181,7 +182,7 @@ function Home() {
               <button
                 className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md cursor-pointer text-sm"
                 onClick={async () => {
-                  await axios.post("/api/user/logout");
+                  await axios.post(`${BASE_URL}/api/user/logout`);
                   navigate("/login");
                 }}
               >
@@ -230,7 +231,7 @@ function Home() {
                   <button
                     className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md cursor-pointer"
                     onClick={async () => {
-                      await axios.post("/api/user/logout");
+                      await axios.post(`${BASE_URL}/api/user/logout`);
                       navigate("/login");
                     }}
                   >
