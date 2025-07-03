@@ -105,7 +105,7 @@ function Home() {
     };
 
     const fetchUser = async () => {
-      try {
+      
         console.log("Fetching User...")
         const res = await axios.get(`${BASE_URL}/api/user`, {
           withCredentials: true,
@@ -115,9 +115,7 @@ function Home() {
         } else {
           setUser(res.data);
         }
-      } catch (err) {
-        console.log("ERROR in fetching User", err);
-      }
+     
     };
 
     fetchTodos();
