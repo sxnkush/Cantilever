@@ -13,7 +13,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import "react-clock/dist/Clock.css";
-import DigitClock from "./components/digitClock";
+import DigitClock from "./components/DigitClock";
 
 axios.defaults.withCredentials = true;
 
