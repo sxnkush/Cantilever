@@ -17,8 +17,14 @@ async function handleTask(req, res) {
 }
 
 async function provideTask(req, res) {
+  if (!req.user || !req.user._id) {
+    return res.json({ message: "not found" });
+  }
   const userId = req.user._id;
   const taskData = await taskModel.find({ userId: userId });
+  if (!taskData) {
+    return res.json({ message: "not found" });
+  }
   return res.json(taskData);
 }
 
