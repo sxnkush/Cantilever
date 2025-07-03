@@ -7,12 +7,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/task': {
-        target: 'http://localhost:8001',
+        target: 'https://task-manager-180.onrender.com/',
         changeOrigin: true,
         secure: false,
       },
       '/api/user': {
-        target: 'http://localhost:8001',
+        target: 'https://task-manager-180.onrender.com/',
         changeOrigin: true,
         secure: false,
       }
