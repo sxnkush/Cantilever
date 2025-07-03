@@ -25,7 +25,7 @@ async function handleLogIn(req, res) {
   httpOnly: true,
   secure: true,               
   sameSite: "None",         
-  maxAge: 24 * 60 * 60 * 1000 
+  maxAge:  60 * 60 * 1000 / 6 
 });
 
   return res.json({message:"success"})
