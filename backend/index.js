@@ -17,7 +17,7 @@ connectMongoose(process.env.MONGO_URI).then(() =>
 );
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "https://task-manager-180.netlify.app"],
   credentials: true
 };
 
