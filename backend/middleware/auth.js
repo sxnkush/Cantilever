@@ -1,29 +1,48 @@
-const { getUser } = require("../services/auth")
+const { getUser } = require("../services/auth");
 
-async function restrictToLoggedInUserOnly(req, res, next)
-{
-    console.log("Authenticating....LOGGEDIN")
-    const userId = req.cookies?.uid
-    if(!userId) return res.json({message:"not found"})       //if user is not loggedIn
+function restrictToLoggedInUserOnly(req, res, next) {
+  console.log("Authenticating....LOGGEDIN");
 
-    const user = getUser(userId)
-    if(!user) return res.json({message:"not found"})
+  const token = req.cookies?.uid;
+  if (!token) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
 
-    req.user = user 
-    next()
+  try {
+    const user = getUser(token);
+    if (!user) {
+      return res.status(401).json({ message: "unauthorized" });
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    console.error("JWT verification failed:", err.message);
+    return res.status(401).json({ message: "unauthorized" });
+  }
 }
 
-async function checkAuth(req, res, next)
-{
-    console.log("Authenticating....CHECKAUTH")
-    const userId = req.cookies?.uid
-    const user = getUser(userId)
+function checkAuth(req, res, next) {
+  console.log("Authenticating....CHECKAUTH");
 
-    req.user = user
-    next()
+  const token = req.cookies?.uid;
+  if (!token) {
+    req.user = null;
+    return next();
+  }
+
+  try {
+    const user = getUser(token);
+    req.user = user || null;
+  } catch (err) {
+    console.error("JWT checkAuth error:", err.message);
+    req.user = null;
+  }
+
+  next();
 }
 
 module.exports = {
-    restrictToLoggedInUserOnly,
-    checkAuth
-}
+  restrictToLoggedInUserOnly,
+  checkAuth,
+};
