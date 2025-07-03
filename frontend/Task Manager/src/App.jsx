@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Home from "./Home";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
