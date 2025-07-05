@@ -3,16 +3,15 @@ const taskModel = require("../models/task");
 async function handleTask(req, res) {
   const taskData = req.body;
   if (!taskData.taskInfo) return res.status(400).json({ msg: "NO task found" });
-  console.log("Handle");
+  if(!req.user._id) return res.json({message:"user not logged in or not exist"})
   await taskModel.create({
     userId: req.user._id, //will get 'user' from the middleware restrictedtologgedinusers there we defined req.user = user using the route '/task'
     taskInfo: taskData.taskInfo,
-    toggleCheck: taskData.toggleCheck,
-    startMarked: taskData.startMarked,
     visitHistory: [],
   });
 
-  const updatedTaskData = await taskModel.find();
+  const userId = req.user._id;
+  const updatedTaskData = await taskModel.find({userId: userId});
   return res.json(updatedTaskData);
 }
 

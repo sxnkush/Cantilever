@@ -30,8 +30,9 @@ function TodoForm() {
         headers: {
           "Content-Type": "application/json",
         },
-      }, { withCredentials: true });
-
+        withCredentials: true 
+      });
+      console.log("Form data", response.data);
       setTodos(response.data);
       setTodo("");
     } catch (err) {

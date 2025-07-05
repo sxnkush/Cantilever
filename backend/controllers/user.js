@@ -27,12 +27,12 @@ async function handleLogIn(req, res) {
     sameSite: "None",
     maxAge: (60 * 60 * 1000) / 6,
   });
-
+  console.log("User Logged In=>", req.body);
   return res.json({ message: "success" });
 }
 
 async function handleLogOut(req, res) {
-  console.log("Logging out...");
+  console.log("Logging out...", req.user);
   res.clearCookie("uid", {
     httpOnly: true,
     secure: true,
@@ -49,7 +49,6 @@ async function provideUser(req, res) {
 
     const userId = req.user._id;
     const userData = await User.findById(userId);
-
     if (!userData) {
       return res.json({ message: "not found" });
     }

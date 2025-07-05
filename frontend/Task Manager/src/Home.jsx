@@ -19,7 +19,7 @@ axios.defaults.withCredentials = true;
 function Home() {
   const BASE_URL = import.meta.env.VITE_API_URL;
   const [todos, setTodos] = useState([]);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState();
   const navigate = useNavigate();
   const [time, setTime] = useState(new Date());
   const [showLogout, setShowLogout] = useState(false);
@@ -94,6 +94,7 @@ function Home() {
         const res = await axios.get(`${BASE_URL}/api/task`, {
           withCredentials: true,
         });
+        console.log("Data", res.data)
         if (res.data.message === "not found") {
           navigate("/login");
         } else {
@@ -105,18 +106,24 @@ function Home() {
     };
 
     const fetchUser = async () => {
-      
+      try{
         console.log("Fetching User...")
         const res = await axios.get(`${BASE_URL}/api/user`, {
           withCredentials: true,
         });
+        console.log("In user", res.data);
         if (res.data.message === "not found") {
           navigate("/login");
         } else {
           setUser(res.data);
         }
-     
+      }  
+       catch(err)
+    {
+      console.log("Error in Fetching User", err)
+    }  
     };
+   
 
     fetchTodos();
     fetchUser();
@@ -194,7 +201,7 @@ function Home() {
               className="w-12 h-12 rounded-full border-2 border-[#00c2ff]"
             />
             <div className="flex flex-col text-left truncate">
-              <p className="font-medium truncate">{user[0]?.name || "..."}</p>
+              <p className="font-medium truncate">{user?.name || "Loading..."}</p>
             </div>
             {showLogout && (
               <button
@@ -232,7 +239,7 @@ function Home() {
                 />
                 <div className="flex flex-col text-left truncate">
                   <p className="font-medium truncate">
-                    {user[0]?.name || "..."}
+                    {user?.name || "..."}
                   </p>
                 </div>
                 {arrowDown ? (
@@ -246,7 +253,7 @@ function Home() {
                 <div className="bg-[#02293e] p-4 rounded-lg text-sm space-y-4">
                   <div className="flex items-center gap-2">
                     <FaEnvelope />
-                    <span>{user[0]?.email || "Loading..."}</span>
+                    <span>{user?.email || "Loading..."}</span>
                   </div>
                   <button
                     className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md cursor-pointer"
