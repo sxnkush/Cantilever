@@ -25,12 +25,11 @@ function App() {
         if (res.status === 200) setIsAuthenticated(true);
       } catch (err) {
         setIsAuthenticated(false); // 401 or other error
-      } finally {
-        setIsLoading(false);
-      }
+      } 
     };
 
     fetchUser();
+    setIsLoading(false);
   }, []);
 
   return (
