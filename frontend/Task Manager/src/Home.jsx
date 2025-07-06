@@ -54,9 +54,7 @@ function Home() {
       const res = await axios.delete(`${BASE_URL}/api/task/${id}`, {
         withCredentials: true,
       });
-      setTodos((prev) =>
-        prev.filter((item) => item._id !== res.data.deleted._id)
-      );
+      setTodos(res.data.userData);
     } catch (err) {
       console.log("ERROR in deleting", err);
     }
