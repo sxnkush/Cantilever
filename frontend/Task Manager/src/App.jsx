@@ -39,10 +39,11 @@ function App() {
         <div>Loading...</div>
       ) : (
         <Routes>
+          <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/"
-            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
           />
         </Routes>
       )}
