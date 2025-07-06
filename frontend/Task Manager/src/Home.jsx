@@ -237,7 +237,7 @@ function Home() {
                 />
                 <div className="flex flex-col text-left truncate">
                   <p className="font-medium truncate">
-                    {user?.name || "..."}
+                    {user?.name || "Loading..."}
                   </p>
                 </div>
                 {arrowDown ? (
