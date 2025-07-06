@@ -25,11 +25,12 @@ function App() {
         if (res.status === 200) setIsAuthenticated(true);
       } catch (err) {
         setIsAuthenticated(false); // 401 or other error
-      } 
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchUser();
-    setIsLoading(false);
   }, []);
 
   return (
@@ -42,7 +43,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route
             path="/"
-            element={!isAuthenticated ? <Navigate to="/login" /> : <Home/>}
+            element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
           />
         </Routes>
       )}
