@@ -43,7 +43,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route
             path="/"
-            element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+            element={!isAuthenticated ? <Navigate to="/login" /> : <Home/>}
           />
         </Routes>
       )}
